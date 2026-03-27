@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flutter Structure Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+Thai:wght@300;400;500;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f14; --bg2: #13161e; --bg3: #1a1e2a;
+  --border: rgba(255,255,255,0.07);
+  --text: #e8eaf0; --muted: #6b7280;
+  --accent: #54d6ff; --accent2: #a78bfa;
+  --accent3: #34d399; --accent4: #fb923c;
+  --code-bg: #0a0c10;
+  --code-kw: #c084fc; --code-str: #86efac;
+  --code-num: #fb923c; --code-fn: #67e8f9;
+  --code-cm: #4b5563; --code-cls: #fde68a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans Thai','Space Grotesk',sans-serif; font-size: 15px; line-height: 1.7; min-height: 100vh; }
+
+.layout { display: flex; min-height: 100vh; }
+
+nav {
+  width: 260px; min-width: 260px;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  position: sticky; top: 0; height: 100vh;
+  overflow-y: auto; padding: 0 0 32px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.nav-logo { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+.nav-logo .flutter-icon { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; }
+.nav-logo .subtitle { font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: 0.5px; text-transform: uppercase; }
+.nav-section-label { font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; padding: 8px 20px 4px; }
+nav a { display: flex; align-items: center; gap: 10px; padding: 8px 20px; color: #9ca3af; text-decoration: none; font-size: 13px; border-left: 2px solid transparent; transition: all 0.15s; }
+nav a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+nav a.active { color: var(--accent); border-left-color: var(--accent); background: rgba(84,214,255,0.06); }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.search-wrap { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.search-input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; color: var(--text); font-size: 13px; outline: none; font-family: 'Noto Sans Thai',sans-serif; }
+.search-input:focus { border-color: rgba(84,214,255,0.3); }
+.search-input::placeholder { color: var(--muted); }
+
+main { flex: 1; padding: 48px 56px; max-width: 860px; }
+.page-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.page-header h1 { font-size: 32px; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; font-family: 'Space Grotesk',sans-serif; }
+.page-header p { color: var(--muted); font-size: 15px; }
+
+.progress-bar { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 32px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.progress-label { font-size: 12px; color: var(--muted); }
+.progress-done { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 500; background: rgba(52,211,153,0.15); color: var(--accent3); }
+.progress-next { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 500; background: rgba(84,214,255,0.15); color: var(--accent); }
+.progress-later { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 500; background: rgba(75,85,99,0.2); color: var(--muted); }
+
+.section { margin-bottom: 64px; scroll-margin-top: 32px; }
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.section-tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.8px; text-transform: uppercase; flex-shrink: 0; }
+.tag-fixed   { background: rgba(75,85,99,0.4); color: #9ca3af; }
+.tag-appwide { background: rgba(124,58,237,0.2); color: #a78bfa; }
+.tag-screen  { background: rgba(13,148,136,0.2); color: #5eead4; }
+.tag-layout  { background: rgba(217,119,6,0.2); color: #fbbf24; }
+.tag-content { background: rgba(225,29,72,0.2); color: #fb7185; }
+.tag-interact{ background: rgba(22,163,74,0.2); color: #4ade80; }
+.tag-state   { background: rgba(37,99,235,0.2); color: #60a5fa; }
+.tag-custom  { background: rgba(236,72,153,0.2); color: #f472b6; }
+.section-header h2 { font-size: 22px; font-weight: 700; font-family: 'Space Grotesk',sans-serif; letter-spacing: -0.3px; }
+.section-desc { color: var(--muted); margin-bottom: 20px; font-size: 14px; }
+
+.concept-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+.concept-title { padding: 14px 20px; font-weight: 600; font-size: 14px; border-bottom: 1px solid transparent; display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; background: var(--bg3); transition: background 0.15s; }
+.concept-title:hover { background: rgba(255,255,255,0.05); }
+.concept-title.open { border-bottom-color: var(--border); }
+.chevron { margin-left: auto; color: var(--muted); font-size: 11px; transition: transform 0.2s; display: inline-block; }
+.concept-title.open .chevron { transform: rotate(180deg); }
+.concept-body { display: none; padding: 20px; }
+.concept-body.open { display: block; }
+.concept-what { font-size: 13px; color: #d1d5db; margin-bottom: 16px; line-height: 1.7; }
+.concept-when { font-size: 12px; color: var(--muted); background: rgba(255,255,255,0.03); border-left: 2px solid var(--accent); padding: 8px 12px; border-radius: 0 6px 6px 0; margin-bottom: 12px; }
+
+pre { background: var(--code-bg); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 18px 20px; overflow-x: auto; font-family: 'JetBrains Mono',monospace; font-size: 12.5px; line-height: 1.8; margin-top: 12px; }
+.kw  { color: var(--code-kw); }
+.str { color: var(--code-str); }
+.num { color: var(--code-num); }
+.fn  { color: var(--code-fn); }
+.cm  { color: var(--code-cm); font-style: italic; }
+.cls { color: var(--code-cls); }
+
+.props-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+.props-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+.props-table td { padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+.props-table tr:last-child td { border-bottom: none; }
+.props-table tr:hover td { background: rgba(255,255,255,0.02); }
+.prop-name { font-family: 'JetBrains Mono',monospace; color: var(--accent); font-size: 12px; }
+.prop-type { font-family: 'JetBrains Mono',monospace; color: var(--accent2); font-size: 11px; }
+.prop-req  { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(251,146,60,0.2); color: var(--accent4); }
+.prop-opt  { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(75,85,99,0.3); color: var(--muted); }
+
+.widget-preview { background: #1c2333; border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-top: 12px; }
+.preview-label { font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 12px; }
+
+.phone-mock { width: 220px; background: #0d0f14; border-radius: 20px; border: 1.5px solid rgba(255,255,255,0.1); overflow: hidden; margin: 0 auto; }
+.phone-appbar { background: #1565c0; padding: 12px 16px; font-size: 14px; font-weight: 500; color: white; }
+.phone-body { padding: 16px; min-height: 140px; }
+.phone-fab-btn { position: absolute; right: 12px; bottom: 4px; width: 38px; height: 38px; background: #1565c0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+.phone-fab { position: relative; height: 46px; }
+
+.demo-row { display: flex; gap: 6px; }
+.demo-col { display: flex; flex-direction: column; gap: 6px; }
+.demo-box { background: rgba(84,214,255,0.15); border: 1px solid rgba(84,214,255,0.3); border-radius: 6px; padding: 8px 12px; font-size: 12px; color: var(--accent); text-align: center; }
+.demo-box.b { background: rgba(217,119,6,0.15); border-color: rgba(217,119,6,0.3); color: var(--accent4); }
+.demo-box.c { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.3); color: var(--accent3); }
+
+.btn-el { display:inline-block; background:#1565c0; color:white; padding:10px 20px; border-radius:8px; font-size:13px; font-weight:500; box-shadow:0 3px 8px rgba(0,0,0,0.4); margin:4px; }
+.btn-tx { display:inline-block; color:#60a5fa; padding:10px 20px; border-radius:8px; font-size:13px; font-weight:500; margin:4px; }
+.btn-ol { display:inline-block; border:1.5px solid #60a5fa; color:#60a5fa; padding:9px 20px; border-radius:8px; font-size:13px; font-weight:500; margin:4px; }
+
+.state-flow { display:flex; flex-direction:column; gap:6px; }
+.state-box { background:rgba(37,99,235,0.15); border:1px solid rgba(37,99,235,0.3); border-radius:8px; padding:8px 14px; font-size:12px; color:#93c5fd; font-family:'JetBrains Mono',monospace; display:inline-block; }
+.state-arrow { color:var(--muted); padding-left:12px; font-size:13px; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav id="sidebar">
+  <div class="nav-logo">
+    <div class="flutter-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13.9 2.1L3 13l3.5 3.5L20.4 2.1h-6.5zM13.9 13.5L9.2 18.2l4.7 4.7h6.5l-4.7-4.7 4.7-4.7h-6.5z" fill="#54d6ff"/></svg>
+      Flutter Reference
+    </div>
+    <div class="subtitle">สื่อการสอน — App Structure</div>
+  </div>
+  <div class="search-wrap">
+    <input class="search-input" type="text" placeholder="ค้นหา widget..." id="searchInput" oninput="filterNav(this.value)">
+  </div>
+
+  <div class="nav-section-label">โครงสร้างหลัก</div>
+  <a href="#main"><span class="nav-dot" style="background:#6b7280"></span>main() + runApp()</a>
+  <a href="#materialapp"><span class="nav-dot" style="background:#7c3aed"></span>MaterialApp</a>
+  <a href="#scaffold"><span class="nav-dot" style="background:#0d9488"></span>Scaffold</a>
+
+  <div class="nav-section-label">จัดวาง UI</div>
+  <a href="#column-row"><span class="nav-dot" style="background:#d97706"></span>Column &amp; Row</a>
+  <a href="#stack"><span class="nav-dot" style="background:#d97706"></span>Stack</a>
+  <a href="#container"><span class="nav-dot" style="background:#d97706"></span>Container</a>
+  <a href="#expanded"><span class="nav-dot" style="background:#d97706"></span>Expanded &amp; Flexible</a>
+  <a href="#sizedbox"><span class="nav-dot" style="background:#d97706"></span>SizedBox &amp; Padding</a>
+
+  <div class="nav-section-label">แสดงเนื้อหา</div>
+  <a href="#text"><span class="nav-dot" style="background:#e11d48"></span>Text</a>
+  <a href="#image"><span class="nav-dot" style="background:#e11d48"></span>Image</a>
+  <a href="#icon"><span class="nav-dot" style="background:#e11d48"></span>Icon</a>
+  <a href="#listview"><span class="nav-dot" style="background:#e11d48"></span>ListView</a>
+
+  <div class="nav-section-label">รับ Input</div>
+  <a href="#buttons"><span class="nav-dot" style="background:#16a34a"></span>Buttons (3 แบบ)</a>
+  <a href="#gesture"><span class="nav-dot" style="background:#16a34a"></span>GestureDetector</a>
+  <a href="#textfield"><span class="nav-dot" style="background:#16a34a"></span>TextField</a>
+
+  <div class="nav-section-label">State</div>
+  <a href="#stateless"><span class="nav-dot" style="background:#2563eb"></span>StatelessWidget</a>
+  <a href="#stateful"><span class="nav-dot" style="background:#2563eb"></span>StatefulWidget</a>
+  <a href="#setstate"><span class="nav-dot" style="background:#2563eb"></span>setState</a>
+  <a href="#lifecycle"><span class="nav-dot" style="background:#2563eb"></span>Lifecycle</a>
+
+  <div class="nav-section-label">Custom Widget</div>
+  <a href="#custom"><span class="nav-dot" style="background:#ec4899"></span>แยก Class</a>
+  <a href="#params"><span class="nav-dot" style="background:#ec4899"></span>ส่ง Parameter</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>Flutter App Structure</h1>
+    <p>Reference ครบชุด — คลิกแต่ละหัวข้อเพื่อขยายรายละเอียด พร้อม code ตัวอย่างทุก Widget</p>
+  </div>
+
+  <div class="progress-bar">
+    <span class="progress-label">ความคืบหน้า:</span>
+    <span class="progress-done">✓ main()</span>
+    <span class="progress-done">✓ MaterialApp</span>
+    <span class="progress-done">✓ Scaffold</span>
+    <span class="progress-done">✓ Column/Row</span>
+    <span class="progress-done">✓ setState</span>
+    <span class="progress-done">✓ Custom Widget</span>
+    <span class="progress-next">→ Layout ลึกขึ้น</span>
+    <span class="progress-later">Provider (Week 3)</span>
+  </div>
+
+  <!-- ═══════════ main() ═══════════ -->
+  <section class="section" id="main">
+    <div class="section-header">
+      <span class="section-tag tag-fixed">🔒 ตายตัว</span>
+      <h2>main() + runApp()</h2>
+    </div>
+    <p class="section-desc">จุดเริ่มต้นของทุก Flutter app — เหมือนกัน 100% ไม่ว่า app จะเล็กหรือใหญ่แค่ไหน</p>
+
+    <div class="concept-card">
+      <div class="concept-title open" onclick="toggle(this)">โครงสร้างพื้นฐาน <span class="chevron open">▼</span></div>
+      <div class="concept-body open">
+        <p class="concept-what"><code>main()</code> คือ entry point ของโปรแกรม Dart — Flutter วิ่งมาที่นี่ก่อนเสมอ <code>runApp()</code> รับ Widget แรกไปแสดงบนหน้าจอ</p>
+        <div class="concept-when">💡 ไม่ต้องแก้ส่วนนี้เลย — copy ไปใช้ได้ทุก project แก้แค่ชื่อ title และ home:</div>
+<pre><span class="kw">import</span> <span class="str">'package:flutter/material.dart'</span>;
+
+<span class="cm">// จุดเริ่มต้นทุก Flutter app — เหมือนกันทุกครั้ง</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+  <span class="fn">runApp</span>(<span class="kw">const</span> <span class="cls">MyApp</span>());
+}
+
+<span class="cm">// MyApp — ตั้งค่า app ครั้งเดียว</span>
+<span class="kw">class</span> <span class="cls">MyApp</span> <span class="kw">extends</span> <span class="cls">StatelessWidget</span> {
+  <span class="kw">const</span> <span class="cls">MyApp</span>({<span class="kw">super</span>.key});
+
+  <span class="kw">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">MaterialApp</span>(
+      title: <span class="str">'ชื่อ App'</span>,        <span class="cm">// ← เปลี่ยนตรงนี้</span>
+      home: <span class="kw">const</span> <span class="cls">MyHomePage</span>(), <span class="cm">// ← และตรงนี้</span>
+    );
+  }
+}</pre>
+        <table class="props-table">
+          <tr><th>ส่วน</th><th>หน้าที่</th><th></th></tr>
+          <tr><td class="prop-name">main()</td><td>Entry point ของ Dart</td><td><span class="prop-opt">ตายตัว</span></td></tr>
+          <tr><td class="prop-name">runApp()</td><td>ส่ง Widget แรกไปแสดง</td><td><span class="prop-opt">ตายตัว</span></td></tr>
+          <tr><td class="prop-name">MyApp</td><td>Widget root — ตั้งค่า app</td><td><span class="prop-req">ชื่อเปลี่ยนได้</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ MaterialApp ═══════════ -->
+  <section class="section" id="materialapp">
+    <div class="section-header">
+      <span class="section-tag tag-appwide">App-wide</span>
+      <h2>MaterialApp</h2>
+    </div>
+    <p class="section-desc">ตั้งค่าระดับ app ทั้งหมด — theme, navigation, locale — แก้ที่เดียว ใช้ทั้ง app</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">Properties ที่ใช้บ่อย <span class="chevron">▼</span></div>
+      <div class="concept-body">
+        <table class="props-table">
+          <tr><th>Property</th><th>Type</th><th>หน้าที่</th></tr>
+          <tr><td class="prop-name">title</td><td class="prop-type">String</td><td>ชื่อ app ใน task switcher</td></tr>
+          <tr><td class="prop-name">home</td><td class="prop-type">Widget</td><td>หน้าแรก <span class="prop-req">สำคัญ</span></td></tr>
+          <tr><td class="prop-name">theme</td><td class="prop-type">ThemeData</td><td>สี, font ทั้ง app <span class="prop-opt">optional</span></td></tr>
+          <tr><td class="prop-name">darkTheme</td><td class="prop-type">ThemeData</td><td>theme dark mode <span class="prop-opt">optional</span></td></tr>
+          <tr><td class="prop-name">routes</td><td class="prop-type">Map&lt;String,Widget&gt;</td><td>แผนที่หน้าจอทั้งหมด <span class="prop-opt">optional</span></td></tr>
+          <tr><td class="prop-name">debugShowCheckedModeBanner</td><td class="prop-type">bool</td><td>ซ่อน DEBUG banner <span class="prop-opt">optional</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">ตัวอย่าง: แบบ minimal <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="cls">MaterialApp</span>(
+  title: <span class="str">'My App'</span>,
+  home: <span class="kw">const</span> <span class="cls">HomeScreen</span>(),
+  debugShowCheckedModeBanner: <span class="kw">false</span>, <span class="cm">// ซ่อน DEBUG</span>
+)</pre>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">ตัวอย่าง: เพิ่ม Theme (สีทั้ง app) <span class="chevron">▼</span></div>
+      <div class="concept-body">
+        <p class="concept-what">กำหนดสีหลักครั้งเดียว — ทุก Widget ใช้สีนี้อัตโนมัติ</p>
+<pre><span class="cls">MaterialApp</span>(
+  title: <span class="str">'My App'</span>,
+  theme: <span class="cls">ThemeData</span>(
+    colorScheme: <span class="cls">ColorScheme</span>.<span class="fn">fromSeed</span>(
+      seedColor: <span class="cls">Colors</span>.blue,
+    ),
+    useMaterial3: <span class="kw">true</span>,
+  ),
+  home: <span class="kw">const</span> <span class="cls">HomeScreen</span>(),
+)</pre>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">ตัวอย่าง: เพิ่ม Routes (หลายหน้า) <span class="chevron">▼</span></div>
+      <div class="concept-body">
+        <div class="concept-when">📌 เรียนลึกขึ้นใน Week 4 — ดูก่อนเพื่อรู้ว่ามีอยู่</div>
+<pre><span class="cls">MaterialApp</span>(
+  routes: {
+    <span class="str">'/'</span>:         (ctx) => <span class="kw">const</span> <span class="cls">HomeScreen</span>(),
+    <span class="str">'/profile'</span>:  (ctx) => <span class="kw">const</span> <span class="cls">ProfileScreen</span>(),
+    <span class="str">'/settings'</span>: (ctx) => <span class="kw">const</span> <span class="cls">SettingsScreen</span>(),
+  },
+)
+
+<span class="cm">// วิธี navigate ไปหน้าอื่น</span>
+<span class="cls">Navigator</span>.<span class="fn">pushNamed</span>(context, <span class="str">'/profile'</span>);</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Scaffold ═══════════ -->
+  <section class="section" id="scaffold">
+    <div class="section-header">
+      <span class="section-tag tag-screen">หน้าจอ</span>
+      <h2>Scaffold</h2>
+    </div>
+    <p class="section-desc">โครงร่างหน้าจอ Material Design — ทุก "หน้า" ของ app ควรเริ่มจาก Scaffold</p>
+
+    <div class="concept-card">
+      <div class="concept-title open" onclick="toggle(this)">Visual Preview — Scaffold มีอะไรบ้าง <span class="chevron open">▼</span></div>
+      <div class="concept-body open">
+        <div class="widget-preview">
+          <div class="preview-label">ตัวอย่าง Scaffold</div>
+          <div class="phone-mock">
+            <div class="phone-appbar">← AppBar: title + actions</div>
+            <div class="phone-body"><div style="color:#6b7280;font-size:12px;text-align:center;padding-top:20px">body: ใส่ Widget อะไรก็ได้<br><span style="font-size:11px;opacity:0.6">Center, Column, ListView ฯลฯ</span></div></div>
+            <div style="background:#1a1e2a;padding:8px 12px;font-size:11px;color:#6b7280;text-align:center;border-top:1px solid rgba(255,255,255,0.05)">bottomNavigationBar (optional)</div>
+            <div class="phone-fab"><div class="phone-fab-btn">+</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">Properties ทั้งหมด <span class="chevron">▼</span></div>
+      <div class="concept-body">
+        <table class="props-table">
+          <tr><th>Property</th><th>Type</th><th>หน้าที่</th></tr>
+          <tr><td class="prop-name">appBar</td><td class="prop-type">AppBar?</td><td>แถบบนสุด — title, back button, actions</td></tr>
+          <tr><td class="prop-name">body ⭐</td><td class="prop-type">Widget?</td><td>เนื้อหาหลัก ใส่ได้ทุกอย่าง</td></tr>
+          <tr><td class="prop-name">floatingActionButton</td><td class="prop-type">Widget?</td><td>ปุ่มลอยมุมขวาล่าง</td></tr>
+          <tr><td class="prop-name">bottomNavigationBar</td><td class="prop-type">Widget?</td><td>แถบ navigate ด้านล่าง</td></tr>
+          <tr><td class="prop-name">drawer</td><td class="prop-type">Widget?</td><td>เมนู slide จากซ้าย</td></tr>
+          <tr><td class="prop-name">backgroundColor</td><td class="prop-type">Color?</td><td>สีพื้นหลังหน้า</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">ตัวอย่าง: Scaffold ครบทุก slot <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="cls">Scaffold</span>(
+  appBar: <span class="cls">AppBar</span>(
+    title: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'หน้าหลัก'</span>),
+    actions: [
+      <span class="cls">IconButton</span>(
+        icon: <span class="kw">const</span> <span class="cls">Icon</span>(<span class="cls">Icons</span>.settings),
+        onPressed: () {},
+      ),
+    ],
+  ),
+  body: <span class="kw">const</span> <span class="cls">Center</span>(
+    child: <span class="cls">Text</span>(<span class="str">'Hello Flutter!'</span>),
+  ),
+  floatingActionButton: <span class="cls">FloatingActionButton</span>(
+    onPressed: () {},
+    child: <span class="kw">const</span> <span class="cls">Icon</span>(<span class="cls">Icons</span>.add),
+  ),
+)</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Column & Row ═══════════ -->
+  <section class="section" id="column-row">
+    <div class="section-header">
+      <span class="section-tag tag-layout">Layout</span>
+      <h2>Column &amp; Row</h2>
+    </div>
+    <p class="section-desc">จัดเรียง children แนวตั้ง (Column) หรือแนวนอน (Row) — ใช้บ่อยที่สุดใน Flutter</p>
+
+    <div class="concept-card">
+      <div class="concept-title open" onclick="toggle(this)">Visual: Column vs Row <span class="chevron open">▼</span></div>
+      <div class="concept-body open">
+        <div class="widget-preview">
+          <div style="display:flex;gap:48px;align-items:flex-start">
+            <div><div class="preview-label">Column (↓ แนวตั้ง)</div><div class="demo-col" style="width:100px"><div class="demo-box">Widget A</div><div class="demo-box b">Widget B</div><div class="demo-box c">Widget C</div></div></div>
+            <div><div class="preview-label">Row (→ แนวนอน)</div><div class="demo-row"><div class="demo-box">A</div><div class="demo-box b">B</div><div class="demo-box c">C</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">mainAxisAlignment — จัด children ในแนวหลัก <span class="chevron">▼</span></div>
+      <div class="concept-body">
+        <p class="concept-what">Column: แนวหลัก = แนวตั้ง | Row: แนวหลัก = แนวนอน</p>
+        <table class="props-table">
+          <tr><th>ค่า</th><th>ผลลัพธ์</th></tr>
+          <tr><td class="prop-name">start</td><td>ชิดต้น (default) — ชิดบน/ซ้าย</td></tr>
+          <tr><td class="prop-name">center</td><td>กึ่งกลาง</td></tr>
+          <tr><td class="prop-name">end</td><td>ชิดปลาย — ชิดล่าง/ขวา</td></tr>
+          <tr><td class="prop-name">spaceBetween</td><td>กระจาย — ปลายสองข้างไม่มีช่องว่าง</td></tr>
+          <tr><td class="prop-name">spaceAround</td><td>กระจาย — มีช่องว่างรอบทุก widget</td></tr>
+          <tr><td class="prop-name">spaceEvenly</td><td>กระจายเท่ากันทุกช่อง</td></tr>
+        </table>
+<pre><span class="cls">Column</span>(
+  mainAxisAlignment: <span class="cls">MainAxisAlignment</span>.center,
+  crossAxisAlignment: <span class="cls">CrossAxisAlignment</span>.start,
+  children: [
+    <span class="cls">Text</span>(<span class="str">'บรรทัดที่ 1'</span>),
+    <span class="cls">Text</span>(<span class="str">'บรรทัดที่ 2'</span>),
+  ],
+)</pre>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">ตัวอย่าง: ซ้อน Column ใน Row (layout จริง) <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="cls">Row</span>(
+  children: [
+    <span class="kw">const</span> <span class="cls">CircleAvatar</span>(radius: <span class="num">24</span>),
+    <span class="kw">const</span> <span class="cls">SizedBox</span>(width: <span class="num">12</span>),
+    <span class="cm">// ซ้อน Column ข้างใน Row</span>
+    <span class="cls">Column</span>(
+      crossAxisAlignment: <span class="cls">CrossAxisAlignment</span>.start,
+      children: [
+        <span class="cls">Text</span>(<span class="str">'Alice'</span>,
+          style: <span class="cls">TextStyle</span>(fontWeight: <span class="cls">FontWeight</span>.bold)),
+        <span class="cls">Text</span>(<span class="str">'นักศึกษา'</span>,
+          style: <span class="cls">TextStyle</span>(color: <span class="cls">Colors</span>.grey)),
+      ],
+    ),
+  ],
+)</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Stack ═══════════ -->
+  <section class="section" id="stack">
+    <div class="section-header">
+      <span class="section-tag tag-layout">Layout</span>
+      <h2>Stack</h2>
+    </div>
+    <p class="section-desc">ซ้อน Widget ทับกัน — เหมือน z-index ใน CSS ใช้สำหรับ overlay, badge, background image</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">ตัวอย่าง: Badge บน Avatar <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="cls">Stack</span>(
+  children: [
+    <span class="cm">// ชั้นล่าง — รูป</span>
+    <span class="kw">const</span> <span class="cls">CircleAvatar</span>(radius: <span class="num">30</span>),
+
+    <span class="cm">// ชั้นบน — badge สีเขียว</span>
+    <span class="cls">Positioned</span>(
+      right: <span class="num">0</span>, bottom: <span class="num">0</span>,
+      child: <span class="cls">Container</span>(
+        width: <span class="num">14</span>, height: <span class="num">14</span>,
+        decoration: <span class="cls">BoxDecoration</span>(
+          color: <span class="cls">Colors</span>.green,
+          shape: <span class="cls">BoxShape</span>.circle,
+          border: <span class="cls">Border</span>.<span class="fn">all</span>(
+            color: <span class="cls">Colors</span>.white, width: <span class="num">2</span>),
+        ),
+      ),
+    ),
+  ],
+)</pre>
+        <div class="concept-when">💡 <code>Positioned</code> ใช้กำหนดตำแหน่ง child ใน Stack ด้วย top/bottom/left/right</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Container ═══════════ -->
+  <section class="section" id="container">
+    <div class="section-header">
+      <span class="section-tag tag-layout">Layout</span>
+      <h2>Container</h2>
+    </div>
+    <p class="section-desc">กล่องอเนกประสงค์ — กำหนดขนาด, สี, กรอบ, เงา, padding/margin ได้ในที่เดียว</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">Properties + ตัวอย่างครบ <span class="chevron">▼</span></div>
+      <div class="concept-body">
+        <table class="props-table">
+          <tr><th>Property</th><th>Type</th><th>หน้าที่</th></tr>
+          <tr><td class="prop-name">width / height</td><td class="prop-type">double?</td><td>กำหนดขนาด</td></tr>
+          <tr><td class="prop-name">padding</td><td class="prop-type">EdgeInsets</td><td>ระยะห่างข้างใน</td></tr>
+          <tr><td class="prop-name">margin</td><td class="prop-type">EdgeInsets</td><td>ระยะห่างข้างนอก</td></tr>
+          <tr><td class="prop-name">color</td><td class="prop-type">Color?</td><td>สีพื้นหลัง (ถ้าไม่มี decoration)</td></tr>
+          <tr><td class="prop-name">decoration</td><td class="prop-type">BoxDecoration?</td><td>สี + กรอบ + เงา + borderRadius</td></tr>
+          <tr><td class="prop-name">alignment</td><td class="prop-type">Alignment?</td><td>จัด child ภายใน</td></tr>
+        </table>
+<pre><span class="cls">Container</span>(
+  width: <span class="num">200</span>, height: <span class="num">100</span>,
+  padding: <span class="kw">const</span> <span class="cls">EdgeInsets</span>.all(<span class="num">16</span>),
+  margin: <span class="kw">const</span> <span class="cls">EdgeInsets</span>.only(top: <span class="num">8</span>),
+  decoration: <span class="cls">BoxDecoration</span>(
+    color: <span class="cls">Colors</span>.blue.shade50,
+    borderRadius: <span class="cls">BorderRadius</span>.<span class="fn">circular</span>(<span class="num">12</span>),
+    border: <span class="cls">Border</span>.<span class="fn">all</span>(color: <span class="cls">Colors</span>.blue),
+    boxShadow: [
+      <span class="cls">BoxShadow</span>(
+        color: <span class="cls">Colors</span>.black26,
+        blurRadius: <span class="num">8</span>,
+        offset: <span class="cls">Offset</span>(<span class="num">0</span>, <span class="num">4</span>),
+      ),
+    ],
+  ),
+  child: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'Hello!'</span>),
+)</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Expanded ═══════════ -->
+  <section class="section" id="expanded">
+    <div class="section-header">
+      <span class="section-tag tag-layout">Layout</span>
+      <h2>Expanded &amp; Flexible</h2>
+    </div>
+    <p class="section-desc">แบ่งพื้นที่ใน Row/Column — ปุ่ม 0 ในเครื่องคิดเลขที่กว้าง 2 ช่องใช้ตัวนี้</p>
+
+    <div class="concept-card">
+      <div class="concept-title open" onclick="toggle(this)">Expanded vs Flexible + ตัวอย่าง flex <span class="chevron open">▼</span></div>
+      <div class="concept-body open">
+        <table class="props-table">
+          <tr><th></th><th>Expanded</th><th>Flexible</th></tr>
+          <tr><td>พื้นที่</td><td>ขอทั้งหมดที่เหลือ</td><td>ขอแค่ที่ต้องการ</td></tr>
+          <tr><td>ใช้เมื่อ</td><td>อยากให้เต็มพื้นที่</td><td>อยากให้ยืดหยุ่น</td></tr>
+        </table>
+<pre><span class="cls">Row</span>(
+  children: [
+    <span class="cls">Expanded</span>(
+      flex: <span class="num">2</span>, <span class="cm">// ขอ 2 ส่วน จากทั้งหมด 3 ส่วน</span>
+      child: <span class="cls">Container</span>(color: <span class="cls">Colors</span>.blue),
+    ),
+    <span class="cls">Expanded</span>(
+      flex: <span class="num">1</span>, <span class="cm">// ขอ 1 ส่วน</span>
+      child: <span class="cls">Container</span>(color: <span class="cls">Colors</span>.red),
+    ),
+  ],
+)
+
+<span class="cm">// จากเครื่องคิดเลข — ปุ่ม 0 กว้าง 2 ช่อง</span>
+<span class="cls">Row</span>(
+  children: [
+    <span class="cls">CalcButton</span>(label: <span class="str">'0'</span>, flex: <span class="num">2</span>),
+    <span class="cls">CalcButton</span>(label: <span class="str">'.'</span>, flex: <span class="num">1</span>),
+    <span class="cls">CalcButton</span>(label: <span class="str">'='</span>, flex: <span class="num">1</span>),
+  ],
+)</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ SizedBox ═══════════ -->
+  <section class="section" id="sizedbox">
+    <div class="section-header">
+      <span class="section-tag tag-layout">Layout</span>
+      <h2>SizedBox &amp; Padding</h2>
+    </div>
+    <p class="section-desc">เพิ่มช่องว่างและระยะห่าง — ใช้แทน margin/padding ใน Container เมื่อไม่ต้องการ decoration</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">SizedBox vs Padding — ใช้อันไหน? <span class="chevron">▼</span></div>
+      <div class="concept-body">
+        <div class="concept-when">💡 SizedBox = ช่องว่างระหว่าง Widget | Padding = ระยะห่างรอบ Widget เดียว</div>
+<pre><span class="cm">// SizedBox — ช่องว่างระหว่าง Widget</span>
+<span class="cls">Column</span>(children: [
+  <span class="cls">Text</span>(<span class="str">'ข้อความแรก'</span>),
+  <span class="kw">const</span> <span class="cls">SizedBox</span>(height: <span class="num">16</span>), <span class="cm">// spacer แนวตั้ง</span>
+  <span class="cls">Text</span>(<span class="str">'ข้อความที่สอง'</span>),
+])
+
+<span class="cls">Row</span>(children: [
+  <span class="cls">Icon</span>(<span class="cls">Icons</span>.star),
+  <span class="kw">const</span> <span class="cls">SizedBox</span>(width: <span class="num">8</span>), <span class="cm">// spacer แนวนอน</span>
+  <span class="cls">Text</span>(<span class="str">'ดาวดวงโปรด'</span>),
+])
+
+<span class="cm">// Padding — เพิ่ม padding รอบ Widget เดียว</span>
+<span class="cls">Padding</span>(
+  padding: <span class="kw">const</span> <span class="cls">EdgeInsets</span>.symmetric(
+    horizontal: <span class="num">16</span>, vertical: <span class="num">8</span>,
+  ),
+  child: <span class="cls">Text</span>(<span class="str">'ข้อความมี padding'</span>),
+)</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Text ═══════════ -->
+  <section class="section" id="text">
+    <div class="section-header">
+      <span class="section-tag tag-content">Content</span>
+      <h2>Text</h2>
+    </div>
+    <p class="section-desc">แสดงข้อความ — Widget ที่ใช้บ่อยที่สุด ปรับแต่งได้ผ่าน TextStyle</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">TextStyle + RichText <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="cls">Text</span>(
+  <span class="str">'ข้อความตัวอย่าง'</span>,
+  style: <span class="cls">TextStyle</span>(
+    fontSize: <span class="num">24</span>,
+    fontWeight: <span class="cls">FontWeight</span>.bold,
+    color: <span class="cls">Colors</span>.blue,
+    letterSpacing: <span class="num">1.2</span>,
+    height: <span class="num">1.5</span>, <span class="cm">// line height</span>
+    decoration: <span class="cls">TextDecoration</span>.underline,
+  ),
+  textAlign: <span class="cls">TextAlign</span>.center,
+  maxLines: <span class="num">2</span>,
+  overflow: <span class="cls">TextOverflow</span>.ellipsis, <span class="cm">// ตัดด้วย ...</span>
+)
+
+<span class="cm">// RichText — หลาย style ในบรรทัดเดียว</span>
+<span class="cls">Text</span>.<span class="fn">rich</span>(
+  <span class="cls">TextSpan</span>(children: [
+    <span class="cls">TextSpan</span>(text: <span class="str">'ปกติ '</span>),
+    <span class="cls">TextSpan</span>(text: <span class="str">'หนา'</span>,
+      style: <span class="cls">TextStyle</span>(fontWeight: <span class="cls">FontWeight</span>.bold)),
+    <span class="cls">TextSpan</span>(text: <span class="str">' สีแดง'</span>,
+      style: <span class="cls">TextStyle</span>(color: <span class="cls">Colors</span>.red)),
+  ]),
+)</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Image ═══════════ -->
+  <section class="section" id="image">
+    <div class="section-header">
+      <span class="section-tag tag-content">Content</span>
+      <h2>Image</h2>
+    </div>
+    <p class="section-desc">แสดงรูปภาพ — จาก network, asset, หรือ memory</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">3 แบบของ Image <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="cm">// 1. จาก URL</span>
+<span class="cls">Image</span>.<span class="fn">network</span>(
+  <span class="str">'https://example.com/photo.jpg'</span>,
+  width: <span class="num">200</span>, height: <span class="num">200</span>,
+  fit: <span class="cls">BoxFit</span>.cover,
+)
+
+<span class="cm">// 2. จาก assets (ไฟล์ใน project)</span>
+<span class="cm">// ต้องประกาศใน pubspec.yaml ก่อน</span>
+<span class="cls">Image</span>.<span class="fn">asset</span>(<span class="str">'assets/images/logo.png'</span>)
+
+<span class="cm">// 3. CircleAvatar — รูปวงกลม</span>
+<span class="cls">CircleAvatar</span>(
+  radius: <span class="num">40</span>,
+  backgroundImage: <span class="cls">NetworkImage</span>(<span class="str">'https://...'</span>),
+)</pre>
+        <div class="concept-when">💡 BoxFit.cover = เต็มกรอบ ตัดขอบ | BoxFit.contain = เต็มกรอบ ไม่ตัด | BoxFit.fill = ยืดเต็ม</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Icon ═══════════ -->
+  <section class="section" id="icon">
+    <div class="section-header">
+      <span class="section-tag tag-content">Content</span>
+      <h2>Icon</h2>
+    </div>
+    <p class="section-desc">ไอคอน Material Design — มีหลายพันตัว ใช้ร่วมกับ IconButton สำหรับปุ่มที่กดได้</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">Icon vs IconButton <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="cm">// Icon — แค่แสดง กดไม่ได้</span>
+<span class="cls">Icon</span>(
+  <span class="cls">Icons</span>.favorite,
+  color: <span class="cls">Colors</span>.red,
+  size: <span class="num">32</span>,
+)
+
+<span class="cm">// IconButton — ไอคอนที่กดได้ มี ripple</span>
+<span class="cls">IconButton</span>(
+  icon: <span class="kw">const</span> <span class="cls">Icon</span>(<span class="cls">Icons</span>.share),
+  onPressed: () {},
+  tooltip: <span class="str">'แชร์'</span>,
+)
+
+<span class="cm">// ดูไอคอนทั้งหมด: fonts.google.com/icons</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ ListView ═══════════ -->
+  <section class="section" id="listview">
+    <div class="section-header">
+      <span class="section-tag tag-content">Content</span>
+      <h2>ListView</h2>
+    </div>
+    <p class="section-desc">รายการที่ scroll ได้ — ใช้แทน Column เมื่อ item มาก หรือไม่รู้จำนวนล่วงหน้า</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">3 แบบของ ListView <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="cm">// 1. ListView — item น้อย fixed</span>
+<span class="cls">ListView</span>(
+  children: <span class="kw">const</span> [
+    <span class="cls">ListTile</span>(title: <span class="cls">Text</span>(<span class="str">'Item 1'</span>)),
+    <span class="cls">ListTile</span>(title: <span class="cls">Text</span>(<span class="str">'Item 2'</span>)),
+  ],
+)
+
+<span class="cm">// 2. ListView.builder — item มาก / ไม่รู้จำนวน</span>
+<span class="cm">// สร้าง Widget เฉพาะที่แสดงบนหน้าจอ = ประหยัด memory</span>
+<span class="cls">ListView</span>.<span class="fn">builder</span>(
+  itemCount: students.length,
+  itemBuilder: (context, index) {
+    <span class="kw">return</span> <span class="cls">ListTile</span>(
+      title: <span class="cls">Text</span>(students[index].name),
+      subtitle: <span class="cls">Text</span>(<span class="str">'คะแนน: </span>${students[index].score}<span class="str">'</span>),
+      leading: <span class="kw">const</span> <span class="cls">CircleAvatar</span>(
+        child: <span class="cls">Icon</span>(<span class="cls">Icons</span>.person)),
+    );
+  },
+)
+
+<span class="cm">// 3. ListView.separated — มีเส้นคั่น</span>
+<span class="cls">ListView</span>.<span class="fn">separated</span>(
+  itemCount: items.length,
+  itemBuilder: (ctx, i) => <span class="cls">Text</span>(items[i]),
+  separatorBuilder: (ctx, i) => <span class="kw">const</span> <span class="cls">Divider</span>(),
+)</pre>
+        <div class="concept-when">💡 ใช้ Column เมื่อ item น้อย (&lt;10) — ใช้ ListView.builder เมื่อ item มาก เพราะ lazy load</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Buttons ═══════════ -->
+  <section class="section" id="buttons">
+    <div class="section-header">
+      <span class="section-tag tag-interact">Interaction</span>
+      <h2>Buttons — 3 แบบ</h2>
+    </div>
+    <p class="section-desc">Logic เหมือนกันทุกอย่าง — ต่างกันแค่รูปลักษณ์ เลือกตามลำดับความสำคัญของ action</p>
+
+    <div class="concept-card">
+      <div class="concept-title open" onclick="toggle(this)">Visual Preview + เลือกใช้อันไหน <span class="chevron open">▼</span></div>
+      <div class="concept-body open">
+        <div class="widget-preview">
+          <div class="preview-label">ปุ่มทั้ง 3 แบบ</div>
+          <div><span class="btn-el">บันทึก</span><span class="btn-ol">ดูเพิ่มเติม</span><span class="btn-tx">ยกเลิก</span></div>
+        </div>
+        <table class="props-table" style="margin-top:12px">
+          <tr><th>Button</th><th>ใช้เมื่อ</th><th>ตัวอย่าง</th></tr>
+          <tr><td class="prop-name">ElevatedButton</td><td>Primary — สำคัญที่สุด</td><td>บันทึก, Login, ซื้อ</td></tr>
+          <tr><td class="prop-name">OutlinedButton</td><td>Alternative — ทางเลือก</td><td>ดูเพิ่มเติม, แก้ไข</td></tr>
+          <tr><td class="prop-name">TextButton</td><td>Secondary — เบาที่สุด</td><td>ยกเลิก, ข้าม</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">Code ทั้ง 3 แบบ + Style + Disabled <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="cm">// ElevatedButton — มี background สี</span>
+<span class="cls">ElevatedButton</span>(
+  onPressed: () {},
+  style: <span class="cls">ElevatedButton</span>.<span class="fn">styleFrom</span>(
+    backgroundColor: <span class="cls">Colors</span>.blue,
+    foregroundColor: <span class="cls">Colors</span>.white,
+    shape: <span class="cls">RoundedRectangleBorder</span>(
+      borderRadius: <span class="cls">BorderRadius</span>.<span class="fn">circular</span>(<span class="num">8</span>)),
+  ),
+  child: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'บันทึก'</span>),
+)
+
+<span class="cm">// OutlinedButton — มีแค่กรอบ</span>
+<span class="cls">OutlinedButton</span>(
+  onPressed: () {},
+  style: <span class="cls">OutlinedButton</span>.<span class="fn">styleFrom</span>(
+    side: <span class="kw">const</span> <span class="cls">BorderSide</span>(color: <span class="cls">Colors</span>.blue),
+  ),
+  child: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'ดูเพิ่มเติม'</span>),
+)
+
+<span class="cm">// TextButton — ไม่มี background</span>
+<span class="cls">TextButton</span>(
+  onPressed: () {},
+  child: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'ยกเลิก'</span>),
+)
+
+<span class="cm">// Disabled — ส่ง null ให้ onPressed</span>
+<span class="cls">ElevatedButton</span>(
+  onPressed: <span class="kw">null</span>, <span class="cm">// null = disabled อัตโนมัติ</span>
+  child: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'ไม่สามารถกดได้'</span>),
+)
+
+<span class="cm">// Disabled style กำหนดเองได้</span>
+<span class="cls">ElevatedButton</span>(
+  onPressed: isActive ? () {} : <span class="kw">null</span>,
+  style: <span class="cls">ElevatedButton</span>.<span class="fn">styleFrom</span>(
+    disabledBackgroundColor:
+      <span class="cls">Colors</span>.red.<span class="fn">withValues</span>(alpha: <span class="num">0.1</span>),
+    disabledForegroundColor: <span class="cls">Colors</span>.red,
+  ),
+  child: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'ปุ่ม'</span>),
+)</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ GestureDetector ═══════════ -->
+  <section class="section" id="gesture">
+    <div class="section-header">
+      <span class="section-tag tag-interact">Interaction</span>
+      <h2>GestureDetector</h2>
+    </div>
+    <p class="section-desc">ทำให้ Widget ใด ๆ รับ gesture ได้ — tap, double tap, long press, swipe, pinch</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">GestureDetector vs InkWell <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="cm">// GestureDetector — รับ gesture ได้ทุกแบบ</span>
+<span class="cls">GestureDetector</span>(
+  onTap: () {},
+  onDoubleTap: () {},
+  onLongPress: () {},
+  child: <span class="cls">Container</span>(
+    width: <span class="num">100</span>, height: <span class="num">100</span>,
+    color: <span class="cls">Colors</span>.blue,
+  ),
+)
+
+<span class="cm">// InkWell — เหมือนกัน แต่มี ripple effect</span>
+<span class="cls">InkWell</span>(
+  onTap: () {},
+  borderRadius: <span class="cls">BorderRadius</span>.<span class="fn">circular</span>(<span class="num">8</span>),
+  child: <span class="cls">Container</span>(
+    padding: <span class="kw">const</span> <span class="cls">EdgeInsets</span>.all(<span class="num">16</span>),
+    child: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'กดที่นี่'</span>),
+  ),
+)</pre>
+        <div class="concept-when">💡 ใช้ InkWell แทน GestureDetector เมื่ออยากได้ ripple effect แบบ Material</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TextField ═══════════ -->
+  <section class="section" id="textfield">
+    <div class="section-header">
+      <span class="section-tag tag-interact">Interaction</span>
+      <h2>TextField</h2>
+    </div>
+    <p class="section-desc">รับ input ข้อความ — ใช้ร่วมกับ TextEditingController เพื่อดึงค่า</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">TextField พร้อม Controller <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="kw">class</span> <span class="cls">_MyState</span> <span class="kw">extends</span> <span class="cls">State</span>&lt;<span class="cls">MyWidget</span>&gt; {
+  <span class="kw">final</span> _controller = <span class="cls">TextEditingController</span>();
+
+  <span class="kw">@override</span>
+  <span class="kw">void</span> <span class="fn">dispose</span>() {
+    _controller.<span class="fn">dispose</span>(); <span class="cm">// ต้อง dispose เสมอ!</span>
+    <span class="kw">super</span>.<span class="fn">dispose</span>();
+  }
+
+  <span class="kw">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Column</span>(children: [
+      <span class="cls">TextField</span>(
+        controller: _controller,
+        decoration: <span class="kw">const</span> <span class="cls">InputDecoration</span>(
+          labelText: <span class="str">'ชื่อ'</span>,
+          hintText: <span class="str">'พิมพ์ชื่อของคุณ'</span>,
+          border: <span class="cls">OutlineInputBorder</span>(),
+          prefixIcon: <span class="cls">Icon</span>(<span class="cls">Icons</span>.person),
+        ),
+        onChanged: (v) { <span class="cm">/* เรียกทุกครั้งที่พิมพ์ */</span> },
+        onSubmitted: (v) { <span class="cm">/* กด Enter */</span> },
+      ),
+      <span class="cls">ElevatedButton</span>(
+        onPressed: () {
+          <span class="kw">final</span> text = _controller.text; <span class="cm">// ดึงค่า</span>
+          <span class="fn">print</span>(text);
+        },
+        child: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'บันทึก'</span>),
+      ),
+    ]);
+  }
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ StatelessWidget ═══════════ -->
+  <section class="section" id="stateless">
+    <div class="section-header">
+      <span class="section-tag tag-state">State</span>
+      <h2>StatelessWidget</h2>
+    </div>
+    <p class="section-desc">Widget ที่ UI ขึ้นอยู่กับ input เท่านั้น — ไม่มีข้อมูลภายในที่เปลี่ยนได้</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">โครงสร้างและตัวอย่าง <span class="chevron">▼</span></div>
+      <div class="concept-body">
+        <div class="concept-when">💡 ใช้เมื่อ Widget ไม่ต้องเปลี่ยนตัวเอง — แค่รับข้อมูลมาแสดง</div>
+<pre><span class="kw">class</span> <span class="cls">StudentCard</span> <span class="kw">extends</span> <span class="cls">StatelessWidget</span> {
+  <span class="kw">final</span> <span class="cls">String</span> name;
+  <span class="kw">final</span> <span class="kw">int</span> score;
+
+  <span class="kw">const</span> <span class="cls">StudentCard</span>({
+    <span class="kw">super</span>.key,
+    <span class="kw">required</span> <span class="kw">this</span>.name,
+    <span class="kw">required</span> <span class="kw">this</span>.score,
+  });
+
+  <span class="kw">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Card</span>(
+      child: <span class="cls">ListTile</span>(
+        title: <span class="cls">Text</span>(name),
+        trailing: <span class="cls">Text</span>(<span class="str">'$score'</span>),
+      ),
+    );
+  }
+}
+
+<span class="cm">// ใช้งาน</span>
+<span class="cls">StudentCard</span>(name: <span class="str">'Alice'</span>, score: <span class="num">85</span>)</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ StatefulWidget ═══════════ -->
+  <section class="section" id="stateful">
+    <div class="section-header">
+      <span class="section-tag tag-state">State</span>
+      <h2>StatefulWidget</h2>
+    </div>
+    <p class="section-desc">Widget ที่มีข้อมูลภายในเปลี่ยนแปลงได้ — แยกเป็น 2 class เสมอ</p>
+
+    <div class="concept-card">
+      <div class="concept-title open" onclick="toggle(this)">ทำไมต้อง 2 class? <span class="chevron open">▼</span></div>
+      <div class="concept-body open">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+          <span class="state-box">Widget (immutable)</span>
+          <span style="color:var(--muted)">+</span>
+          <span class="state-box">State (mutable)</span>
+          <span style="color:var(--muted)">=</span>
+          <span class="state-box">StatefulWidget</span>
+        </div>
+        <p class="concept-what">Widget ถูกสร้างและทิ้งบ่อยมากตอน rebuild แต่ State ต้องอยู่รอดได้ข้าม rebuild — ถ้าเก็บข้อมูลใน Widget มันจะหายทุกครั้ง</p>
+<pre><span class="kw">class</span> <span class="cls">Counter</span> <span class="kw">extends</span> <span class="cls">StatefulWidget</span> {
+  <span class="kw">const</span> <span class="cls">Counter</span>({<span class="kw">super</span>.key});
+
+  <span class="kw">@override</span>
+  <span class="cls">State</span>&lt;<span class="cls">Counter</span>&gt; <span class="fn">createState</span>() => <span class="cls">_CounterState</span>();
+}
+
+<span class="kw">class</span> <span class="cls">_CounterState</span> <span class="kw">extends</span> <span class="cls">State</span>&lt;<span class="cls">Counter</span>&gt; {
+  <span class="cm">// State อยู่ที่นี่ — อยู่รอดข้าม rebuild</span>
+  <span class="kw">int</span> _count = <span class="num">0</span>;
+
+  <span class="kw">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Text</span>(<span class="str">'$_count'</span>);
+  }
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ setState ═══════════ -->
+  <section class="section" id="setstate">
+    <div class="section-header">
+      <span class="section-tag tag-state">State</span>
+      <h2>setState</h2>
+    </div>
+    <p class="section-desc">บอก Flutter ว่า state เปลี่ยนแล้ว — ให้ build() ใหม่</p>
+
+    <div class="concept-card">
+      <div class="concept-title open" onclick="toggle(this)">setState ทำงานยังไง? <span class="chevron open">▼</span></div>
+      <div class="concept-body open">
+        <div class="state-flow" style="margin-bottom:16px">
+          <div><span class="state-box">1. ผู้ใช้กดปุ่ม</span></div>
+          <div class="state-arrow">↓</div>
+          <div><span class="state-box">2. setState(() &#123; _count++; &#125;)</span></div>
+          <div class="state-arrow">↓</div>
+          <div><span class="state-box">3. Flutter mark widget ว่า "dirty"</span></div>
+          <div class="state-arrow">↓</div>
+          <div><span class="state-box">4. build() ถูกเรียกใหม่</span></div>
+          <div class="state-arrow">↓</div>
+          <div><span class="state-box">5. UI อัปเดตเฉพาะส่วนที่เปลี่ยน</span></div>
+        </div>
+<pre><span class="cm">// ✅ ถูก — แก้ state ใน setState</span>
+<span class="fn">setState</span>(() {
+  _count++;
+  _name = <span class="str">'Alice'</span>;
+});
+
+<span class="cm">// ❌ ผิด — แก้ state นอก setState</span>
+<span class="cm">// UI ไม่อัปเดต!</span>
+_count++; <span class="cm">// ค่าเปลี่ยนในหน่วยความจำ แต่จอไม่รู้</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Lifecycle ═══════════ -->
+  <section class="section" id="lifecycle">
+    <div class="section-header">
+      <span class="section-tag tag-state">State</span>
+      <h2>Lifecycle</h2>
+    </div>
+    <p class="section-desc">ลำดับการทำงานของ StatefulWidget ตั้งแต่เกิดจนตาย</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">Methods ที่ต้องรู้ <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="kw">class</span> <span class="cls">_MyState</span> <span class="kw">extends</span> <span class="cls">State</span>&lt;<span class="cls">MyWidget</span>&gt; {
+
+  <span class="cm">// 1. initState — ทำครั้งเดียวตอนสร้าง</span>
+  <span class="cm">// ใช้: โหลดข้อมูลครั้งแรก, ตั้งค่า controller</span>
+  <span class="kw">@override</span>
+  <span class="kw">void</span> <span class="fn">initState</span>() {
+    <span class="kw">super</span>.<span class="fn">initState</span>(); <span class="cm">// ต้องเรียกก่อนเสมอ</span>
+    <span class="fn">loadData</span>();
+  }
+
+  <span class="cm">// 2. build — ทำทุกครั้งที่ setState ถูกเรียก</span>
+  <span class="kw">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Text</span>(<span class="str">'Hello'</span>);
+  }
+
+  <span class="cm">// 3. dispose — ตอน Widget ถูกลบออกจาก tree</span>
+  <span class="cm">// ใช้: ยกเลิก timer, dispose controller</span>
+  <span class="kw">@override</span>
+  <span class="kw">void</span> <span class="fn">dispose</span>() {
+    _controller.<span class="fn">dispose</span>();
+    <span class="kw">super</span>.<span class="fn">dispose</span>(); <span class="cm">// ต้องเรียกทีหลังเสมอ</span>
+  }
+}</pre>
+        <div class="concept-when">💡 initState: super ก่อน | dispose: super หลัง — จำกลับกัน</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Custom Widget ═══════════ -->
+  <section class="section" id="custom">
+    <div class="section-header">
+      <span class="section-tag tag-custom">Custom</span>
+      <h2>แยก Custom Widget</h2>
+    </div>
+    <p class="section-desc">เมื่อ Widget ซับซ้อนหรือซ้ำกัน — แยกออกมาเป็น class ใหม่ อ่านง่ายขึ้น นำกลับมาใช้ได้</p>
+
+    <div class="concept-card">
+      <div class="concept-title open" onclick="toggle(this)">เมื่อไหร่ควรแยก? <span class="chevron open">▼</span></div>
+      <div class="concept-body open">
+        <table class="props-table">
+          <tr><th>เมื่อ</th><th>แยก?</th></tr>
+          <tr><td>Widget เดิมซ้ำกัน 2+ ที่</td><td style="color:var(--accent3)">✅ ควรแยก (DRY)</td></tr>
+          <tr><td>build() ยาวเกิน 60-80 บรรทัด</td><td style="color:var(--accent3)">✅ ควรแยก (อ่านยาก)</td></tr>
+          <tr><td>Widget มี logic ของตัวเอง</td><td style="color:var(--accent3)">✅ ควรแยก</td></tr>
+          <tr><td>ใช้แค่ที่เดียว สั้น ไม่ซับซ้อน</td><td style="color:var(--muted)">❌ ไม่จำเป็น</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">ตัวอย่าง: CalcButton จากเครื่องคิดเลข <span class="chevron">▼</span></div>
+      <div class="concept-body">
+<pre><span class="kw">class</span> <span class="cls">CalcButton</span> <span class="kw">extends</span> <span class="cls">StatelessWidget</span> {
+  <span class="kw">final</span> <span class="cls">String</span> label;
+  <span class="kw">final</span> <span class="cls">VoidCallback</span>? onTap;
+  <span class="kw">final</span> <span class="cls">Color</span> color;
+  <span class="kw">final</span> <span class="kw">int</span> flex;
+
+  <span class="kw">const</span> <span class="cls">CalcButton</span>({
+    <span class="kw">super</span>.key,
+    <span class="kw">required</span> <span class="kw">this</span>.label,
+    <span class="kw">required</span> <span class="kw">this</span>.onTap,
+    <span class="kw">this</span>.color = <span class="cls">Colors</span>.grey,
+    <span class="kw">this</span>.flex = <span class="num">1</span>,
+  });
+
+  <span class="kw">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Expanded</span>(
+      flex: flex,
+      child: <span class="cls">ElevatedButton</span>(
+        style: <span class="cls">ElevatedButton</span>.<span class="fn">styleFrom</span>(
+          backgroundColor: color),
+        onPressed: onTap,
+        child: <span class="cls">Text</span>(label,
+          style: <span class="kw">const</span> <span class="cls">TextStyle</span>(fontSize: <span class="num">24</span>)),
+      ),
+    );
+  }
+}
+
+<span class="cm">// ใช้งาน — สะอาด อ่านเข้าใจทันที</span>
+<span class="cls">CalcButton</span>(label: <span class="str">'7'</span>, onTap: () => <span class="fn">_onNumber</span>(<span class="str">'7'</span>))
+<span class="cls">CalcButton</span>(label: <span class="str">'0'</span>, flex: <span class="num">2</span>, onTap: () => <span class="fn">_onNumber</span>(<span class="str">'0'</span>))</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ ส่ง Parameter ═══════════ -->
+  <section class="section" id="params">
+    <div class="section-header">
+      <span class="section-tag tag-custom">Custom</span>
+      <h2>ส่ง Parameter ให้ Widget</h2>
+    </div>
+    <p class="section-desc">วิธีส่งข้อมูลและ callback จาก Parent → Child Widget</p>
+
+    <div class="concept-card">
+      <div class="concept-title" onclick="toggle(this)">Data + Callback Pattern <span class="chevron">▼</span></div>
+      <div class="concept-body">
+        <div class="concept-when">💡 หลักการ: Child ไม่จัดการ state เอง — ส่ง event กลับ Parent แล้วให้ Parent setState</div>
+<pre><span class="cm">// Child รับข้อมูล และส่ง event กลับ</span>
+<span class="kw">class</span> <span class="cls">LikeButton</span> <span class="kw">extends</span> <span class="cls">StatelessWidget</span> {
+  <span class="kw">final</span> <span class="kw">bool</span> isLiked;           <span class="cm">// ข้อมูลจาก Parent</span>
+  <span class="kw">final</span> <span class="cls">VoidCallback</span> onToggle; <span class="cm">// callback → Parent</span>
+
+  <span class="kw">const</span> <span class="cls">LikeButton</span>({
+    <span class="kw">super</span>.key,
+    <span class="kw">required</span> <span class="kw">this</span>.isLiked,
+    <span class="kw">required</span> <span class="kw">this</span>.onToggle,
+  });
+
+  <span class="kw">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">IconButton</span>(
+      icon: <span class="cls">Icon</span>(
+        isLiked ? <span class="cls">Icons</span>.favorite : <span class="cls">Icons</span>.favorite_border,
+        color: isLiked ? <span class="cls">Colors</span>.red : <span class="kw">null</span>,
+      ),
+      onPressed: onToggle,
+    );
+  }
+}
+
+<span class="cm">// Parent จัดการ state</span>
+<span class="kw">class</span> <span class="cls">_ParentState</span> <span class="kw">extends</span> <span class="cls">State</span>&lt;<span class="cls">Parent</span>&gt; {
+  <span class="kw">bool</span> _liked = <span class="kw">false</span>;
+
+  <span class="kw">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">LikeButton</span>(
+      isLiked: _liked,
+      onToggle: () => <span class="fn">setState</span>(() => _liked = !_liked),
+    );
+  }
+}</pre>
+      </div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+function toggle(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+function filterNav(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('nav a').forEach(a => {
+    a.style.display = a.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-section-label').forEach(label => {
+    const visible = [];
+    let el = label.nextElementSibling;
+    while (el && !el.classList.contains('nav-section-label')) {
+      if (el.tagName === 'A') visible.push(el.style.display !== 'none');
+      el = el.nextElementSibling;
+    }
+    label.style.display = visible.some(Boolean) ? '' : 'none';
+  });
+}
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      document.querySelectorAll('nav a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { threshold: 0.25 });
+
+document.querySelectorAll('section[id]').forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
