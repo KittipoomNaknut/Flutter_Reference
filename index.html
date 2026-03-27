@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flutter Reference — Home</title>
+<link rel="stylesheet" href="home.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="noise"></div>
+
+<header>
+  <div class="logo">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+      <path d="M13.9 2.1L3 13l3.5 3.5L20.4 2.1h-6.5zM13.9 13.5L9.2 18.2l4.7 4.7h6.5l-4.7-4.7 4.7-4.7h-6.5z" fill="url(#g1)"/>
+      <defs>
+        <linearGradient id="g1" x1="3" y1="2" x2="21" y2="23" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#54d6ff"/>
+          <stop offset="1" stop-color="#a78bfa"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <span>Flutter Reference</span>
+  </div>
+  <nav class="top-nav">
+    <a href="index.html" class="active">Home</a>
+    <a href="reference.html">Reference</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+      <div class="grid-lines"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        สื่อการสอน Flutter — Week 1–2
+      </div>
+
+      <h1 class="hero-title">
+        เรียน Flutter<br>
+        <span class="gradient-text">อย่างเป็นระบบ</span>
+      </h1>
+
+      <p class="hero-sub">
+        Reference ครบชุดสำหรับผู้เริ่มต้น — จาก Widget พื้นฐาน<br>
+        ไปจนถึง State Management ทุกอย่างในที่เดียว
+      </p>
+
+      <div class="hero-actions">
+        <a href="reference.html" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          เปิด Reference
+        </a>
+        <a href="#topics" class="btn-ghost">ดูหัวข้อทั้งหมด</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-n">20+</span>
+          <span class="stat-l">Widgets</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-n">7</span>
+          <span class="stat-l">หมวดหมู่</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-n">50+</span>
+          <span class="stat-l">Code ตัวอย่าง</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="code-card">
+        <div class="code-card-header">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="file-name">main.dart</span>
+        </div>
+        <pre class="hero-code"><span class="kw">void</span> <span class="fn">main</span>() {
+  <span class="fn">runApp</span>(<span class="kw">const</span> <span class="cls">MyApp</span>());
+}
+
+<span class="kw">class</span> <span class="cls">MyApp</span> <span class="kw">extends</span>
+    <span class="cls">StatelessWidget</span> {
+  <span class="kw">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(ctx) {
+    <span class="kw">return</span> <span class="cls">MaterialApp</span>(
+      home: <span class="cls">HomeScreen</span>(),
+    );
+  }
+}</pre>
+      </div>
+
+      <div class="float-chip chip1">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        StatefulWidget
+      </div>
+      <div class="float-chip chip2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#54d6ff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        setState
+      </div>
+      <div class="float-chip chip3">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Custom Widget
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESS WEEK -->
+  <section class="week-section">
+    <div class="section-label">แผนการเรียน</div>
+    <h2 class="section-title">Roadmap</h2>
+
+    <div class="weeks-grid">
+
+      <div class="week-card week-done">
+        <div class="week-num">Week 1</div>
+        <div class="week-title">Widget พื้นฐาน</div>
+        <ul class="week-list">
+          <li class="done">main() + runApp()</li>
+          <li class="done">MaterialApp + Scaffold</li>
+          <li class="done">Text, Icon, Image</li>
+          <li class="done">Column, Row, Container</li>
+          <li class="done">ElevatedButton, GestureDetector</li>
+        </ul>
+        <span class="week-badge done-badge">✓ เสร็จแล้ว</span>
+      </div>
+
+      <div class="week-card week-current">
+        <div class="week-num">Week 2</div>
+        <div class="week-title">State & Interaction</div>
+        <ul class="week-list">
+          <li class="done">StatelessWidget</li>
+          <li class="done">StatefulWidget</li>
+          <li class="done">setState</li>
+          <li class="done">Lifecycle</li>
+          <li class="done">Custom Widget + Params</li>
+        </ul>
+        <span class="week-badge current-badge">→ กำลังเรียน</span>
+      </div>
+
+      <div class="week-card week-next">
+        <div class="week-num">Week 3</div>
+        <div class="week-title">State Management</div>
+        <ul class="week-list">
+          <li>Provider</li>
+          <li>ChangeNotifier</li>
+          <li>Consumer</li>
+          <li>InheritedWidget</li>
+          <li>Riverpod (intro)</li>
+        </ul>
+        <span class="week-badge next-badge">เร็วๆ นี้</span>
+      </div>
+
+      <div class="week-card week-future">
+        <div class="week-num">Week 4</div>
+        <div class="week-title">Navigation & API</div>
+        <ul class="week-list">
+          <li>Navigator 2.0</li>
+          <li>Named Routes</li>
+          <li>http package</li>
+          <li>Future + async/await</li>
+          <li>FutureBuilder</li>
+        </ul>
+        <span class="week-badge future-badge">ยังไม่ถึง</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TOPIC CARDS -->
+  <section class="topics-section" id="topics">
+    <div class="section-label">เนื้อหาใน Reference</div>
+    <h2 class="section-title">หัวข้อทั้งหมด</h2>
+
+    <div class="topics-grid">
+
+      <a href="reference.html#main" class="topic-card">
+        <div class="topic-icon" style="background:rgba(107,114,128,0.15);color:#9ca3af">🔒</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#9ca3af">ตายตัว</div>
+          <div class="topic-name">main() + runApp()</div>
+          <div class="topic-desc">จุดเริ่มต้นทุก Flutter app</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#materialapp" class="topic-card">
+        <div class="topic-icon" style="background:rgba(124,58,237,0.15);color:#a78bfa">⚙️</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#a78bfa">App-wide</div>
+          <div class="topic-name">MaterialApp</div>
+          <div class="topic-desc">Theme, routes, locale ทั้ง app</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#scaffold" class="topic-card">
+        <div class="topic-icon" style="background:rgba(13,148,136,0.15);color:#5eead4">🖥️</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#5eead4">หน้าจอ</div>
+          <div class="topic-name">Scaffold</div>
+          <div class="topic-desc">โครงร่างหน้าจอ Material Design</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#column-row" class="topic-card">
+        <div class="topic-icon" style="background:rgba(217,119,6,0.15);color:#fbbf24">⬛</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#fbbf24">Layout</div>
+          <div class="topic-name">Column &amp; Row</div>
+          <div class="topic-desc">จัดเรียงแนวตั้งและแนวนอน</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#stack" class="topic-card">
+        <div class="topic-icon" style="background:rgba(217,119,6,0.15);color:#fbbf24">🗂️</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#fbbf24">Layout</div>
+          <div class="topic-name">Stack</div>
+          <div class="topic-desc">ซ้อน Widget ทับกัน</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#container" class="topic-card">
+        <div class="topic-icon" style="background:rgba(217,119,6,0.15);color:#fbbf24">📦</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#fbbf24">Layout</div>
+          <div class="topic-name">Container</div>
+          <div class="topic-desc">กล่องอเนกประสงค์ สี ขนาด กรอบ</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#expanded" class="topic-card">
+        <div class="topic-icon" style="background:rgba(217,119,6,0.15);color:#fbbf24">↔️</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#fbbf24">Layout</div>
+          <div class="topic-name">Expanded &amp; Flexible</div>
+          <div class="topic-desc">แบ่งพื้นที่ใน Row/Column</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#text" class="topic-card">
+        <div class="topic-icon" style="background:rgba(225,29,72,0.15);color:#fb7185">📝</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#fb7185">Content</div>
+          <div class="topic-name">Text</div>
+          <div class="topic-desc">แสดงข้อความ, TextStyle, RichText</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#listview" class="topic-card">
+        <div class="topic-icon" style="background:rgba(225,29,72,0.15);color:#fb7185">📋</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#fb7185">Content</div>
+          <div class="topic-name">ListView</div>
+          <div class="topic-desc">รายการ scroll ได้, builder, separated</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#buttons" class="topic-card">
+        <div class="topic-icon" style="background:rgba(22,163,74,0.15);color:#4ade80">🔘</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#4ade80">Interaction</div>
+          <div class="topic-name">Buttons — 3 แบบ</div>
+          <div class="topic-desc">Elevated, Outlined, Text</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#textfield" class="topic-card">
+        <div class="topic-icon" style="background:rgba(22,163,74,0.15);color:#4ade80">⌨️</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#4ade80">Interaction</div>
+          <div class="topic-name">TextField</div>
+          <div class="topic-desc">รับ input, TextEditingController</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#stateful" class="topic-card">
+        <div class="topic-icon" style="background:rgba(37,99,235,0.15);color:#60a5fa">🔄</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#60a5fa">State</div>
+          <div class="topic-name">StatefulWidget + setState</div>
+          <div class="topic-desc">State, Lifecycle, rebuild</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+      <a href="reference.html#custom" class="topic-card">
+        <div class="topic-icon" style="background:rgba(236,72,153,0.15);color:#f472b6">🧩</div>
+        <div class="topic-info">
+          <div class="topic-tag" style="color:#f472b6">Custom</div>
+          <div class="topic-name">Custom Widget</div>
+          <div class="topic-desc">แยก class, ส่ง parameter, callback</div>
+        </div>
+        <div class="topic-arrow">→</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- QUICK TIP -->
+  <section class="tip-section">
+    <div class="tip-card">
+      <div class="tip-icon">💡</div>
+      <div class="tip-content">
+        <div class="tip-title">Quick Tip</div>
+        <div class="tip-text">เริ่มจาก <code>StatelessWidget</code> เสมอ — เปลี่ยนเป็น <code>StatefulWidget</code> เมื่อต้องการให้ UI เปลี่ยนตามเวลา ไม่ต้องรีบใช้ StatefulWidget ตั้งแต่แรก</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M13.9 2.1L3 13l3.5 3.5L20.4 2.1h-6.5zM13.9 13.5L9.2 18.2l4.7 4.7h6.5l-4.7-4.7 4.7-4.7h-6.5z" fill="#54d6ff"/>
+      </svg>
+      Flutter Reference
+    </div>
+    <div class="footer-note">สื่อการสอน — ใช้เพื่อการศึกษา</div>
+  </div>
+</footer>
+
+<script src="home.js"></script>
+</body>
+</html>
